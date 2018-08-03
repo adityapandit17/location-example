@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+
+<p>
+  <strong>Address:</strong>
+  <%= @location.address %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @location.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @location.longitude %>
+</p>
+
+
+<div id="map_canvas" style="width:50%;height:500px;"></div> 
+<script>
+function initMap() {
+  var myLatLng = {lat: <%= @location.latitude %>, lng: <%= @location.longitude %>};
+
+  var map = new google.maps.Map(document.getElementById('map_canvas'), {
+    zoom: 12,
+    center: myLatLng
+  });
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    title: 'Hello World!'
+  });
+}
+</script>
+<script 
+  async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC1cqAmyA4B5g45X12AYT61H3XLUzUQxs&callback=initMap">
+</script>
+
+
+<%= link_to 'Edit', edit_location_path(@location) %> |
+<%= link_to 'Back', locations_path %>
