@@ -1,8 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-
-
-
 <h1>Locations</h1>
 
 <%# title "Locations" %>
@@ -40,3 +37,109 @@
   <br>
 
   <%= link_to 'New Location', new_location_path %>
+
+<div id="map_canvas" style="width:50%;height:500px;"></div> 
+<script>
+function initMap() {
+  var myLatLng = {lat: 22.7196, lng: 75.8577};
+
+
+  var icon = {
+    url: "http://jazykove-studio.com/gallery/google-marker-icons.png", // url
+    scaledSize: new google.maps.Size(50, 50), // scaled size
+  };
+
+  var map = new google.maps.Map(document.getElementById('map_canvas'), {
+    zoom: 8,
+    center: myLatLng
+  });
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    icon: icon
+  });
+
+
+  var allLocations = [];
+
+  var markers = [];
+
+  <% @locations.each do |place| %>
+  allLocations.push(["<%= place.address %>", <%= place.latitude %>, <%= place.longitude %>])
+  <% end %>
+
+
+  var infowindow = new google.maps.InfoWindow();
+
+  var marker, i;
+
+  var icon = {
+    url: "http://jazykove-studio.com/gallery/google-marker-icons.png", // url
+    scaledSize: new google.maps.Size(50, 50) // scaled size
+  };
+
+
+  for (i = 0; i < allLocations.length; i++) {  
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(allLocations[i][1], allLocations[i][2]),
+      map: map,
+      icon: icon
+      // icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png"
+    });
+
+      markers.push(marker);
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent(allLocations[i][0]);
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+  }
+
+
+
+  // var options = {
+  //             // url: "http://jazykove-studio.com/gallery/google-marker-icons.png", // url
+  //             // scaledSize: new google.maps.Size(50, 50)
+  //               url: "'http://jazykove-studio.com/gallery/google-marker-icons.png'+'/'+'m'", // url
+  //               scaledSize: new google.maps.Size(50, 50)
+
+  //         };
+
+   //      var markerCluster = new MarkerClusterer(map, markers, options);
+
+    // var options = {
+    //         icon: "http://jazykove-studio.com/gallery/google-marker-icons.png",
+    //         imagePath: '../../assets/images/marker1.png/m'
+    //     };
+
+options = {
+   styles: [{
+            height: 100,
+            url: "http://jazykove-studio.com/gallery/google-marker-icons.png",
+            textSize: 10 ,
+            width: 100
+        }]
+}
+
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+// var markers = locations.map(function(location, i) {
+//           return new google.maps.Marker({
+//             position: location,
+//             label: labels[i % labels.length]
+//           });
+//         });
+
+ var markerCluster = new MarkerClusterer(map, markers,options);
+// {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}
+
+}
+
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+<script 
+  async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC1cqAmyA4B5g45X12AYT61H3XLUzUQxs&callback=initMap">
+</script>
