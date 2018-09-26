@@ -114,14 +114,14 @@ function initMap() {
     //         imagePath: '../../assets/images/marker1.png/m'
     //     };
 
-options = {
-   styles: [{
-            height: 100,
-            url: "http://jazykove-studio.com/gallery/google-marker-icons.png",
-            textSize: 10 ,
-            width: 100
-        }]
-}
+// options = {
+//    styles: [{
+//             height: 100,
+//             url: "http://jazykove-studio.com/gallery/google-marker-icons.png",
+//             textSize: 10 ,
+//             width: 100
+//         }]
+// }
 
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 // var markers = locations.map(function(location, i) {
@@ -131,7 +131,7 @@ var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 //           });
 //         });
 
- var markerCluster = new MarkerClusterer(map, markers,options);
+ var markerCluster = new MarkerClusterer(map, markers,{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 // {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}
 
 }
